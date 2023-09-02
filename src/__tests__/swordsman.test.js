@@ -1,20 +1,20 @@
-import Character from '../character';
+import Swordsman from '../swordsman';
 
 test.each([
-  ['Alise', 'Magician', 
+  ['Alise', 'Swordsman', 
     {
       name: 'Alise', 
-      type: 'Magician', 
+      type: 'Swordsman', 
       health: 100,
       level: 1,
-      attack: 10,
-      defence: 40
+      attack: 40,
+      defence: 10
     }
   ],
-  ['Dima', 'Zombie',
+  ['Dima', undefined,
     {
       name: 'Dima', 
-      type: 'Zombie', 
+      type: 'Swordsman', 
       health: 100,
       level: 1,
       attack: 40,
@@ -23,29 +23,30 @@ test.each([
   ]
 ])// eslint-disable-next-line
 ('testin Character class with %s name and %s type', (name, type, expected) => {
-  const result = new Character(name, type);
+  const result = new Swordsman(name, type);
   expect(result).toEqual(expected);
 });
 
 test.each([
-  ['A', 'Magician', new Error("Имя должно быть не менее 2 и не более 10 символов")],
-  ['Abrakadabra', 'Zombie', new Error("Имя должно быть не менее 2 и не более 10 символов")],
+  ['A', 'Swordsman', new Error("Имя должно быть не менее 2 и не более 10 символов")],
+  ['Abrakadabra', 'Swordsman', new Error("Имя должно быть не менее 2 и не более 10 символов")],
   ['Zombie', 'Abrakadabra', new Error("Тип не найден")]
 ])// eslint-disable-next-line
 ('testin throws Error with %s name and %s type', (name, type, expected) => {
   function result() {
-    new Character(name, type);
+    new Swordsman(name, type);
   }
   expect(result).toThrow(expected);
 });
 
+
 test.each([
   ['Alise', 'Swordsman', 1, 2],
-  ['Dima', 'Zombie', 9, 10],
-  ['Zombie', 'Undead', 100, 101]
+  ['Dima', 'Swordsman', 9, 10],
+  ['Zombie', 'Swordsman', 100, 101]
 ])// eslint-disable-next-line
 ('testin levelUp method with %s name, %s type and %i levelUp', (name, type, index, expected) => {
-  const result = new Character(name, type);
+  const result = new Swordsman(name, type);
   for (let i = 0; i < index; i += 1) {
     result.levelUp();
   }
@@ -53,11 +54,11 @@ test.each([
 });
 
 test.each([
-  ['Zombie', 'Undead', new Error("Нельзя повысить левел умершего")]
+  ['Zombie', 'Swordsman', new Error("Нельзя повысить левел умершего")]
 ])// eslint-disable-next-line
 ('testin throws Error with %s name and %s type', (name, type, expected) => {
   function result() {
-    const result = new Character(name, type);
+    const result = new Swordsman(name, type);
     result.damage(1000);
     result.levelUp();
   }
@@ -65,11 +66,11 @@ test.each([
 });
 
 test.each([
-  ['Alise', 'Undead', 1000, 0],
+  ['Alise', 'Swordsman', 1000, 0],
   ['Dima', 'Swordsman', 100, 10]
 ])// eslint-disable-next-line
 ('testin damage method with %s name, %s type and %i points', (name, type, points, expected) => {
-  const result = new Character(name, type);
+  const result = new Swordsman(name, type);
   result.damage(points);
   expect(result.health).toEqual(expected);
 });
